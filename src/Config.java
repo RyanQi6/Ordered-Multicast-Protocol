@@ -3,16 +3,17 @@ import java.util.*;
 import java.net.*;
 
 public class Config {
-		HashMap<Integer, InetSocketAddress> addrMap;
-		HashMap<InetSocketAddress, Integer> idMap;
-		int minDelay;
-		int maxDelay;
-		public Config(HashMap<Integer, InetSocketAddress> addrMap, HashMap<InetSocketAddress, Integer> idMap, int minDelay, int maxDelay) {
-			this.addrMap = addrMap;
-			this.idMap = idMap;
-			this.minDelay = minDelay;
-			this.maxDelay = maxDelay;
-		}	
+    HashMap<Integer, InetSocketAddress> addrMap;
+    HashMap<InetSocketAddress, Integer> idMap;
+    int minDelay;
+    int maxDelay;
+
+    public Config(HashMap<Integer, InetSocketAddress> addrMap, HashMap<InetSocketAddress, Integer> idMap, int minDelay, int maxDelay) {
+        this.addrMap = addrMap;
+        this.idMap = idMap;
+        this.minDelay = minDelay;
+        this.maxDelay = maxDelay;
+    }
 	
 	public static Config parseConfig(String filename) throws IOException {
 		BufferedReader file = new BufferedReader(new FileReader(filename));
@@ -46,8 +47,5 @@ public class Config {
 		}
 		return new Config(addrMap, idMap, minDelay, maxDelay);
 	}
-	public static void main(String arg[]) throws IOException {
-		Config config = parseConfig("D:\\courses\\uiuc\\coursework\\18spring\\cs425\\mp1\\src\\cs425\\configFile");
 
-	}
 }
