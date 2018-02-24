@@ -1,14 +1,18 @@
+package MP1;
+
 import java.io.*;
 import java.util.*;
 import java.net.*;
 
 public class Config {
+    List<Integer> idList = new ArrayList<>();
     HashMap<Integer, InetSocketAddress> addrMap;
     HashMap<InetSocketAddress, Integer> idMap;
     int minDelay;
     int maxDelay;
 
-    public Config(HashMap<Integer, InetSocketAddress> addrMap, HashMap<InetSocketAddress, Integer> idMap, int minDelay, int maxDelay) {
+    public Config(List<Integer> idList, HashMap<Integer, InetSocketAddress> addrMap, HashMap<InetSocketAddress, Integer> idMap, int minDelay, int maxDelay) {
+        this.idList = idList;
         this.addrMap = addrMap;
         this.idMap = idMap;
         this.minDelay = minDelay;
@@ -31,6 +35,7 @@ public class Config {
 		HashMap<Integer, InetSocketAddress> addrMap = new HashMap<>();
 		HashMap<InetSocketAddress, Integer> idMap = new HashMap<>();
 		String line = file.readLine();
+		List<Integer> idList = new ArrayList<>();
 		while(line != null) {
 			String[] content = line.split("\\s+");
 			if(content.length != 3)
@@ -39,13 +44,14 @@ public class Config {
 			Integer port = Integer.parseInt(content[2]);
 			if(id == null || port == null) 
 				throw new IOException("Wrong Formatted Configuration File");
-			System.out.println("minDelay: " + minDelay + ", maxDelay:" + maxDelay);
-			System.out.println("id: " + id + ", ip: " + content[1] + ", port: " + port);
+//			System.out.println("minDelay: " + minDelay + ", maxDelay:" + maxDelay);
+//			System.out.println("id: " + id + ", ip: " + content[1] + ", port: " + port);
+            idList.add(id);
 			addrMap.put(id, new InetSocketAddress(content[1], port));
 			idMap.put(new InetSocketAddress(content[1], port), id);
 			line = file.readLine();
 		}
-		return new Config(addrMap, idMap, minDelay, maxDelay);
+		return new Config(idList, addrMap, idMap, minDelay, maxDelay);
 	}
 
 }
