@@ -92,6 +92,7 @@ public class Server {
         int ID = Integer.parseInt(messageRaw.substring(0, messageRaw.indexOf("||")));
         String message = messageRaw.substring(messageRaw.indexOf("||") + 2);
         messageBuffer.get(ID).offer(message);
+        System.out.println( "Received \"" + message + "\" from process " + ID + ", system time is " + System.currentTimeMillis() );
     }
 
 }

@@ -41,9 +41,21 @@ public class Unicast {
     }
 
     public void unicast_send(int destination, String message) throws IOException, InterruptedException{
-        c.startClient(hostInfo.addrMap.get(destination).getHostName(), hostInfo.addrMap.get(destination).getPort());
-        c.sendMessage(ID + "||" + message);
-        c.closeClient();
+        int delay = (int) (hostInfo.minDelay + (hostInfo.maxDelay - hostInfo.minDelay) * Math.random());
+        TimerTask unicastSend = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    c.startClient(hostInfo.addrMap.get(destination).getHostName(), hostInfo.addrMap.get(destination).getPort());
+                    c.sendMessage(ID + "||" + message);
+                    c.closeClient();
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        new Timer().schedule(unicastSend, delay);
+        System.out.println( "Sent \"" + message + "\" to process " + destination + ", system time is " + System.currentTimeMillis() );
     }
 
     public String unicast_receive(int source){
