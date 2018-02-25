@@ -45,20 +45,26 @@ public class Unicast {
         TimerTask unicastSend = new TimerTask() {
             @Override
             public void run() {
-                try {
-                    c.startClient(hostInfo.addrMap.get(destination).getHostName(), hostInfo.addrMap.get(destination).getPort());
-                    c.sendMessage(ID + "||" + message);
-                    c.closeClient();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+                synchronizedSend.send(ID, c, hostInfo, destination, message);
             }
         };
         new Timer().schedule(unicastSend, delay);
-        System.out.println( "Sent \"" + message + "\" to process " + destination + ", system time is " + System.currentTimeMillis() );
+        //System.out.println( "Sent \"" + message + "\" to process " + destination + ", system time is " + System.currentTimeMillis() );
     }
 
     public String unicast_receive(int source){
         return messageBuffer.get(source).poll();
+    }
+}
+
+class synchronizedSend {
+    public static synchronized void send(int ID, Client c, Config hostInfo, int destination, String message){
+        try {
+            c.startClient(hostInfo.addrMap.get(destination).getHostName(), hostInfo.addrMap.get(destination).getPort());
+            c.sendMessage(ID + "||" + message);
+            c.closeClient();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
