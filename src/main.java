@@ -14,17 +14,13 @@ public class main {
         Unicast u = new Unicast( Integer.parseInt(args[0]), Config.parseConfig("configFile") );
         u.startListen();
 
+        Multicast m = new Multicast(u);
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        while(true){
+        while (true) {
             String s = br.readLine();
-            if(s.equals("s0"))
-                u.unicast_send(0, "msgTo0");
-            if(s.equals("s1"))
-                u.unicast_send(1, "msgTo1");
-            if(s.equals("r0"))
-                System.out.println(u.unicast_receive(0));
-            if(s.equals("r1"))
-                System.out.println(u.unicast_receive(1));
+            if (s.equals("m"))
+                m.multicast("THIS IS A MULTICAST MESSAGE");
         }
     }
 }
