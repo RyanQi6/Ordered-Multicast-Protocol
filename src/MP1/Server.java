@@ -64,7 +64,7 @@ public class Server {
         channel.configureBlocking(false);
         Socket socket = channel.socket();
         SocketAddress remoteAddr = socket.getRemoteSocketAddress();
-        System.out.println("Connected to: " + remoteAddr);
+//        System.out.println("Connected to: " + remoteAddr);
 
         // register channel with selector for further IO
         channel.register(this.selector, SelectionKey.OP_READ);
@@ -80,7 +80,7 @@ public class Server {
         if (numRead == -1) {
             Socket socket = channel.socket();
             SocketAddress remoteAddr = socket.getRemoteSocketAddress();
-            System.out.println("Connection closed by client: " + remoteAddr);
+//            System.out.println("Connection closed by client: " + remoteAddr);
             channel.close();
             key.cancel();
             return;
@@ -92,7 +92,7 @@ public class Server {
         int ID = Integer.parseInt(messageRaw.substring(0, messageRaw.indexOf("||")));
         String message = messageRaw.substring(messageRaw.indexOf("||") + 2);
         messageBuffer.get(ID).offer(message);
-        System.out.println( "Received \"" + message + "\" from process " + ID + ", system time is " + System.currentTimeMillis() );
+        //System.out.println( "Received \"" + message + "\" from process " + ID + ", system time is " + System.currentTimeMillis() );
     }
 
 }
