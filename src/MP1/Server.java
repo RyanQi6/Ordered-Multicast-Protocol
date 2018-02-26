@@ -64,9 +64,6 @@ public class Server {
         channel.configureBlocking(false);
         Socket socket = channel.socket();
         SocketAddress remoteAddr = socket.getRemoteSocketAddress();
-//        System.out.println("Connected to: " + remoteAddr);
-
-        // register channel with selector for further IO
         channel.register(this.selector, SelectionKey.OP_READ);
     }
 
@@ -92,7 +89,6 @@ public class Server {
         int ID = Integer.parseInt(messageRaw.substring(0, messageRaw.indexOf("||")));
         String message = messageRaw.substring(messageRaw.indexOf("||") + 2);
         messageBuffer.get(ID).offer(message);
-        //System.out.println( "Received \"" + message + "\" from process " + ID + ", system time is " + System.currentTimeMillis() );
     }
 
 }
