@@ -1,15 +1,15 @@
 # Unicast-Multicast-Protocol
 This is a project that implements a basic chat room based on total-ordering multicast and causal-ordering multicast under simulted transfer delay.
 
-Instruction:
-1.Compile the project and open several terminals in the path where config file exits.
-2.java main process_id.
-3.unicast: send target_id message.
-4.multicast: send message.
+## Instruction:
+#### 1.Compile the project and open several terminals in the path where config file exits.
+#### 2.Lauch a process: `java main process_id`.
+#### 3.unicast: `send target_id message`.
+#### 4.multicast: `send message`.
 
 Feel free to change the delay and process parameters in the config file.
 
-Introduction in theory:
+## Introduction in theory:
 Unicast Protocol gives the private channel between a pair of users.
 Multicast Protocol gives a broadcast channel, in which a user sends a message and everyone in the chatroom can receive the message. There are two orderings for Multicast Protocol, Total Ordering and Causal Ordering. 
 
