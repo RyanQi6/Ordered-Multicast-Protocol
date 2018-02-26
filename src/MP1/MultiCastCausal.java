@@ -38,8 +38,8 @@ public class MultiCastCausal {
         }
         final_message += "||" + this.ID + "||" + message;
         for(int i:config.idList){
-            if(i != this.ID){
-                u.unicast_send(i,final_message);
+            if(i != this.ID) {
+                u.unicast_send(i, final_message);
             }
         }
     }
@@ -63,6 +63,7 @@ public class MultiCastCausal {
                 key_value current = this.holdBackQueue.get(i);
                 if(check_co_condition(current)){
                     System.out.println("Sender ID: " + current.fromWho + " System Time: " + System.currentTimeMillis() + " Message: " + current.message);
+                    //this.timeStamp = Arrays.copyOf(current.timeStamp,current.timeStamp.length);
                     this.holdBackQueue.remove(i);
                     i--;
                     this.timeStamp[current.fromWho] += 1;
