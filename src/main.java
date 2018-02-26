@@ -5,26 +5,32 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class main {
+    public static String[] global_args;
+//    public static Config config;
     public static void main(String[] args) throws IOException, InterruptedException {
+        global_args = args;
         if(args.length != 1) {
             System.out.println("Wrong command line!\n");
             System.exit(-1);
         }
-
-        Unicast u = new Unicast( Integer.parseInt(args[0]), Config.parseConfig("configFile") );
+        Config config = Config.parseConfig("configFile");
+        Unicast u = new Unicast( Integer.parseInt(args[0]), config);
         u.startListen();
+        MultiCastCausal co_m = new MultiCastCausal(u);
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         while(true){
             String s = br.readLine();
-            if(s.equals("s0"))
-                u.unicast_send(0, "msgTo0");
-            if(s.equals("s1"))
-                u.unicast_send(1, "msgTo1");
-            if(s.equals("r0"))
-                System.out.println(u.unicast_receive(0));
-            if(s.equals("r1"))
-                System.out.println(u.unicast_receive(1));
+            String[] strings = s.split(" ");
+            System.out.println(strings.length);
+            if(strings.length == 3){
+
+                u.unicast_send(Integer.parseInt(strings[1]), strings[2]);
+            }
+            else if(strings.length == 2){
+                // for multi cast
+                co_m.co_multiCast(strings[1]);
+            }
         }
     }
 }
