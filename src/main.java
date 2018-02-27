@@ -17,10 +17,17 @@ public class main {
         Multicast m = new Multicast(u);
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        while (true) {
+        while(true){
             String s = br.readLine();
-            if (s.equals("m"))
-                m.multicast("THIS IS A MULTICAST MESSAGE");
+            String[] strings = s.split(" ");
+            System.out.println(strings.length);
+            if(strings.length == 3){
+                u.unicast_send(Integer.parseInt(strings[1]), strings[2]);
+            }
+            else if(strings.length == 2){
+                // for multi cast
+                m.multicast(strings[1]);
+            }
         }
     }
 }
