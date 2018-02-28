@@ -5,7 +5,7 @@ This is a project that implements a basic chat room using TCP based on total-ord
 #### 1.Compile the project, move the 'configFile' to the path where main.class exits, and open several terminals under that path.
 #### 2.Lauch the processes(users) in the terminals respectively: `java   main   process_id`.
 #### 3.unicast: `send   target_id   message`.
-#### 4.multicast: `send   message`.
+#### 4.multicast: `msend   message`.
 
 Format of the config file is :
   ```
@@ -17,10 +17,9 @@ Format of the config file is :
 Feel free to change the delay and process parameters in the config file.
 
 ## Introduction in theory:
-Unicast Protocol gives the private channel between a pair of users.
+Unicast Protocol gives the private channel between a pair of users. It will simulate the network delay if you are just running several processes on a single computer.
 Multicast Protocol gives a broadcast channel, in which a user sends a message and everyone in the chatroom can receive the message. There are two orderings for Multicast Protocol, Total Ordering and Causal Ordering. 
 
-The Total Ordering refers to an message deliver ordering where all users keep the same for the receive order, that is, if user A sends message m1, m2, andm3, user B and user C would deliver the messages in a same specifc order, e.g. m2, m1, m3 (this order is necessarily the same with the orginal sending order because of the delay in transferring).
+The Total Ordering refers to an message deliver ordering where all users keep the same for the receive order, that is, if message m1, m2, m3 are sent and one user received in the order of m2, m1, m3, then all other users will also deliver the messages in the same order m2, m1, m3. This order is not necessarily the same with the orginal sending order because of the delay in network environment.
 
-The Causal Ordering refers to an message deliver ordering where all users delivers the message consitent with the user's sending order, or specifically, the happen-before rule. e.g. If user A sends message m1, m2, and m3, then user B sends message m4, though it might be possible that user C receives the m4 even before m1 arrives, the deliver order of user C should still be m1, m2, m3, and m4.
-
+The Causal Ordering refers to an message deliver ordering where all users delivers the message consitent with the happen-before relation. If m1 happen before m2, then all user must deliver m1 before delivering m2. E.g. If user A sends message m1, m2, and m3, and user B delivered m1 and m2 before sending message m4, then for all other processes the relative order of m1, m2 and m3 must be preserved and m4 must be delivered after m1 and m2. For the detailed definition of happen-before relation, check https://en.wikipedia.org/wiki/Happened-before
