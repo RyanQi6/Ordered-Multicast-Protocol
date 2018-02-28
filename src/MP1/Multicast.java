@@ -32,10 +32,12 @@ public class Multicast {
         startListen();
     }
 
+    //To multicast a message, add the "TOSEQ" header and send it to sequencer
     public void multicast(String message) throws IOException, InterruptedException {
         u.unicast_send(u.hostInfo.idList.get(0), "TOSEQ||" + message);
     }
 
+    //Deliver a message with current sequence number if exist.
     public void deliver() {
         String message;
 
@@ -48,7 +50,8 @@ public class Multicast {
             int seq = Integer.parseInt(msgSplit[1]);
             if (seq == curSeq) {
                 String[] messageSplit = buffer.poll().split("\\u007c\\u007c");
-                System.out.println("Sender ID: " + messageSplit[2] + " System Time: " + System.currentTimeMillis() + " Message: " + messageSplit[3]);
+                System.out.println("Sender ID: " + messageSplit[2] + " System Time: "
+                        + System.currentTimeMillis() + " Message: " + messageSplit[3]);
                 curSeq++;
             }
         }
@@ -75,6 +78,7 @@ public class Multicast {
         new Thread(listener).start();
     }
 
+    //For sequencer, decode the message and add the headers of "FROMSEQ", SEQ#, Original host ID. Then broadcast it.
     public void listenAndDeliver() throws IOException, InterruptedException {
         while(true){
             for(int i = 0; i < u.hostInfo.idList.size(); ++i){
@@ -85,7 +89,8 @@ public class Multicast {
                         if (msgSplit[0].equals("TOSEQ")) {
                             String messageSent = message.substring(7); //remove the "TOSEQ||" header
                             for (Integer ID : u.hostInfo.idList) {
-                                u.unicast_send(ID, "FROMSEQ||" + sequencerCurSeq + "||" + u.hostInfo.idList.get(i) + "||" + messageSent);
+                                u.unicast_send(ID, "FROMSEQ||" + sequencerCurSeq
+                                        + "||" + u.hostInfo.idList.get(i) + "||" + messageSent);
                             }
                             sequencerCurSeq++;
                         } else if (msgSplit[0].equals("FROMSEQ")) {
@@ -99,7 +104,8 @@ public class Multicast {
                     while ((message = u.unicast_receive(u.hostInfo.idList.get(i))) != null) {
                         String messageSent = message.substring(7); //remove "TOSEQ||" header
                         for (Integer ID : u.hostInfo.idList) {
-                            u.unicast_send(ID, "FROMSEQ||" + sequencerCurSeq + "||" + u.hostInfo.idList.get(i) + "||" + messageSent);
+                            u.unicast_send(ID, "FROMSEQ||" + sequencerCurSeq
+                                    + "||" + u.hostInfo.idList.get(i) + "||" + messageSent);
                         }
                         sequencerCurSeq++;
                     }
