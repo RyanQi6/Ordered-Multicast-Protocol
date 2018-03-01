@@ -37,7 +37,22 @@ public class Unicast {
             }
         };
 
+        Runnable unicastListen = new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    for(Integer i : hostInfo.idList) {
+                        String message;
+                        while ((message = unicast_receive(i)) != null) {
+                            System.out.println( "Received \"" + message + "\" from process " + i + ", system time is " + System.currentTimeMillis() );
+                        }
+                    }
+                }
+            }
+        };
+
         new Thread(server).start();
+        new Thread(unicastListen).start();
     }
 
     public void unicast_send(int destination, String message) throws IOException, InterruptedException{
@@ -49,7 +64,7 @@ public class Unicast {
             }
         };
         new Timer().schedule(unicastSend, delay);
-        //System.out.println( "Sent \"" + message + "\" to process " + destination + ", system time is " + System.currentTimeMillis() );
+        System.out.println( "Sent \"" + message + "\" to process " + destination + ", system time is " + System.currentTimeMillis() );
     }
 
     public String unicast_receive(int source){
