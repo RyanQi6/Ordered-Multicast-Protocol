@@ -2,6 +2,8 @@ package MP1;
 
 import java.io.IOException;
 import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Unicast {
     int ID;
@@ -44,7 +46,9 @@ public class Unicast {
                     for(Integer i : hostInfo.idList) {
                         String message;
                         while ((message = unicast_receive(i)) != null) {
-                            System.out.println( "Received \"" + message + "\" from process " + i + ", system time is " + System.currentTimeMillis() );
+                            Calendar cal = Calendar.getInstance();
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                            System.out.println( "Received \"" + message + "\" from process " + i + ", system time is " + sdf.format(cal.getTime()) );
                         }
                     }
                 }
@@ -64,7 +68,9 @@ public class Unicast {
             }
         };
         new Timer().schedule(unicastSend, delay);
-        System.out.println( "Sent \"" + message + "\" to process " + destination + ", system time is " + System.currentTimeMillis() );
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        System.out.println( "Sent \"" + message + "\" to process " + destination + ", system time is " + sdf.format(cal.getTime()));//System.currentTimeMillis() );
     }
 
     public String unicast_receive(int source){
