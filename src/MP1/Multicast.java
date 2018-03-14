@@ -3,6 +3,8 @@ package MP1;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Multicast {
     Unicast u;
@@ -50,8 +52,10 @@ public class Multicast {
             int seq = Integer.parseInt(msgSplit[1]);
             if (seq == curSeq) {
                 String[] messageSplit = buffer.poll().split("\\u007c\\u007c");
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                 System.out.println("Sender ID: " + messageSplit[2] + " System Time: "
-                        + System.currentTimeMillis() + " Message: " + messageSplit[3]);
+                        + sdf.format(cal.getTime()) + " Message: " + messageSplit[3]);
                 curSeq++;
             }
         }
