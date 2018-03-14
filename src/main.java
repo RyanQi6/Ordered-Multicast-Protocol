@@ -22,7 +22,6 @@ public class main {
         while(true){
             String s = br.readLine();
             String[] strings = s.split(" ");
-            System.out.println(strings.length);
             if(strings.length == 3){
 
                 u.unicast_send(Integer.parseInt(strings[1]), strings[2]);

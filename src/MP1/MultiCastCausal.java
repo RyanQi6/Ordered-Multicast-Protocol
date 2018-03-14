@@ -1,6 +1,9 @@
 package MP1;
 import java.io.IOException;
 import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class MultiCastCausal {
     class key_value{
         int[] timeStamp;
@@ -62,7 +65,9 @@ public class MultiCastCausal {
             for(int i=0; i<this.holdBackQueue.size(); i++){
                 key_value current = this.holdBackQueue.get(i);
                 if(check_co_condition(current)){
-                    System.out.println("Sender ID: " + current.fromWho + " System Time: " + System.currentTimeMillis() + " Message: " + current.message);
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                    System.out.println("Sender ID: " + current.fromWho + " System Time: " + sdf.format(cal.getTime())  + " Message: " + current.message);
                     //this.timeStamp = Arrays.copyOf(current.timeStamp,current.timeStamp.length);
                     this.holdBackQueue.remove(i);
                     i--;
